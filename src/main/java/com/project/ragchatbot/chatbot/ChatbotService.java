@@ -92,4 +92,8 @@ public class ChatbotService {
     public List<SavedChat> getAllSavedChats(String chatName) {
         return savedChatService.findAllSavedChats();
     }
+
+    public List<String> getAllSavedChatNames() {
+        return savedChatService.findAll();
+    }
 }

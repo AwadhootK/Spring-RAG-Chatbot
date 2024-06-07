@@ -66,4 +66,9 @@ public class ChatbotController {
     public ResponseEntity<List<SavedChat>> getSavedChats(@RequestBody String chatName) {
         return ResponseEntity.ok(chatbotService.getAllSavedChats(chatName));
     }
+
+    @GetMapping("/getAllSavedChatNames")
+    public ResponseEntity<List<String>> getAllSavedChatNames() {
+        return ResponseEntity.ok(chatbotService.getAllSavedChatNames());
+    }
 }

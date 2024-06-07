@@ -24,10 +24,15 @@ public class SavedChatsService {
             throw new RuntimeException(e);
         }
         String chatName1 = jsonNode.get("chatName").asText();
-        SavedChat savedChat = new SavedChat();
-        savedChat.setChatName(chatName1);
-        savedChat.setUserID(username);
-        savedChatRepository.save(savedChat);
+
+        SavedChat savedChat = savedChatRepository.findByChatName(chatName1);
+
+        if (savedChat == null) {
+            savedChat = new SavedChat();
+            savedChat.setChatName(chatName1);
+            savedChat.setUserID(username);
+            savedChatRepository.save(savedChat);
+        }
 
         chatService.saveChatsToDatabase(savedChat);
 
@@ -35,5 +40,9 @@ public class SavedChatsService {
 
     public List<SavedChat> findAllSavedChats() {
         return savedChatRepository.findAll();
+    }
+
+    public List<String> findAll() {
+        return savedChatRepository.findAllChatNames();
     }
 }

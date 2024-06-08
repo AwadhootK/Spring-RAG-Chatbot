@@ -75,14 +75,17 @@ public class ChatbotService {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(query);
         String question = jsonNode.get("query").asText();
-        chatService.saveChatToCache(new CachedChat(question, ChatRole.USER));
 
         String answer = callFlaskAPIPost(FLASK_URL + FlaskAPIEndpoints.ASK, query);
 
         jsonNode = objectMapper.readTree(answer);
         String reply = jsonNode.get("answer").asText();
 
-        chatService.saveChatToCache(new CachedChat(reply, ChatRole.AI));
+        if (!reply.equalsIgnoreCase("The context is empty. Please add a file to query.")) {
+            chatService.saveChatToCache(new CachedChat(question, ChatRole.USER));
+            chatService.saveChatToCache(new CachedChat(reply, ChatRole.AI));
+        }
+
         return answer;
     }
 
@@ -119,7 +122,8 @@ public class ChatbotService {
     }
 
     public List<String> getAllSavedChatNames() {
-        return savedChatService.findAll();
+        String username = UserSecurityDetails.getUsername();
+        return savedChatService.findAll(username);
     }
 
     public String restoreContext() {

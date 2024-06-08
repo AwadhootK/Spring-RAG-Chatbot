@@ -17,6 +17,7 @@ public class SavedChatsService {
     private final ChatService chatService;
 
     public void save(String username, String chatName) {
+        // if chatName already exists mean I just need to add and delete older entry.
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = null;
         try {
@@ -34,7 +35,6 @@ public class SavedChatsService {
             savedChat.setUserID(username);
             savedChatRepository.save(savedChat);
         }
-
         chatService.saveChatsToDatabase(savedChat);
 
     }
@@ -44,7 +44,7 @@ public class SavedChatsService {
         return savedChatRepository.findAllByChatNameAndUserID(chatName, username);
     }
 
-    public List<String> findAll() {
-        return savedChatRepository.findAllChatNames();
+    public List<String> findAll(String username) {
+        return savedChatRepository.findAllChatNames(username);
     }
 }

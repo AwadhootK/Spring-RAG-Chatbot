@@ -7,4 +7,6 @@ public class FlaskAPIEndpoints {
     static String ANSWER_LLM = "/answer-llm";
     static String SUMMARIZE = "/summarize";
     static String SEMANTIC_SEARCH = "/semantic_search";
+
+    static String RESTORE_CONTEXT = "/download-context-files";
 }

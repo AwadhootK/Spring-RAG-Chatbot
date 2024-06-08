@@ -71,4 +71,9 @@ public class ChatbotController {
     public ResponseEntity<List<String>> getAllSavedChatNames() {
         return ResponseEntity.ok(chatbotService.getAllSavedChatNames());
     }
+
+    @GetMapping("/restoreContext")
+    public ResponseEntity<String> restoreContext() {
+        return ResponseEntity.ok(chatbotService.restoreContext());
+    }
 }

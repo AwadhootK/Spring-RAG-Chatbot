@@ -13,6 +13,8 @@ import com.project.ragchatbot.security.config.UserSecurityDetails;
 import lombok.AllArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -43,6 +45,21 @@ public class ChatbotService {
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
         return response.getBody();
     }
+
+    private String callFlaskAPIPost(String url) {
+        String username = UserSecurityDetails.getUsername();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED); // Changed to form URL encoded
+
+        MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+        requestBody.add("username", username); // Add form data
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(requestBody, headers); // Use the correct entity type
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
+        return response.getBody();
+    }
+
 
     private String callFlaskAPIGet(String url) {
         String username = UserSecurityDetails.getUsername();
@@ -90,10 +107,22 @@ public class ChatbotService {
     }
 
     public List<SavedChat> getAllSavedChats(String chatName) {
-        return savedChatService.findAllSavedChats();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = null;
+        try {
+            jsonNode = objectMapper.readTree(chatName);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        String cName = jsonNode.get("chatName").asText();
+        return savedChatService.findAllSavedChats(cName);
     }
 
     public List<String> getAllSavedChatNames() {
         return savedChatService.findAll();
+    }
+
+    public String restoreContext() {
+        return callFlaskAPIPost(FLASK_URL + FlaskAPIEndpoints.RESTORE_CONTEXT);
     }
 }

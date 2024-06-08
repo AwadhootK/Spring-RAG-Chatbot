@@ -11,4 +11,6 @@ public interface SavedChatRepository extends JpaRepository<SavedChat, Integer> {
 
     @Query("SELECT s.chatName FROM SavedChat s")
     List<String> findAllChatNames();
+
+    List<SavedChat> findAllByChatNameAndUserID(String chatName, String userID);
 }

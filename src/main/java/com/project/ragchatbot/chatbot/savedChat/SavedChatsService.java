@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.ragchatbot.chatbot.chat.ChatService;
+import com.project.ragchatbot.security.config.UserSecurityDetails;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +39,9 @@ public class SavedChatsService {
 
     }
 
-    public List<SavedChat> findAllSavedChats() {
-        return savedChatRepository.findAll();
+    public List<SavedChat> findAllSavedChats(String chatName) {
+        String username = UserSecurityDetails.getUsername();
+        return savedChatRepository.findAllByChatNameAndUserID(chatName, username);
     }
 
     public List<String> findAll() {

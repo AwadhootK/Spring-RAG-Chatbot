@@ -1,13 +1,18 @@
 package com.project.ragchatbot.chatbot;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.project.ragchatbot.chatbot.savedChat.SavedChat;
-import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.project.ragchatbot.chatbot.savedChat.jpa.entity.SavedChat;
+
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/v1/chatbot")
@@ -26,7 +31,9 @@ public class ChatbotController {
         try {
             return ResponseEntity.ok(chatbotService.ask(query));
         } catch (JsonProcessingException e) {
-            return ResponseEntity.of(Optional.of("Bad Request"));
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error submitting query");
         }
     }
 

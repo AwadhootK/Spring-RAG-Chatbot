@@ -1,4 +1,4 @@
-package com.project.ragchatbot.chatbot.chat;
+package com.project.ragchatbot.redis;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,14 +1,10 @@
-package com.project.ragchatbot.chatbot.chat;
+package com.project.ragchatbot.chatbot.chat.service.impl;
 
-import com.project.ragchatbot.chatbot.savedChat.SavedChat;
-import com.project.ragchatbot.security.config.UserSecurityDetails;
-import com.project.ragchatbot.security.user.User;
+import com.project.ragchatbot.chatbot.chat.jpa.entity.CachedChat;
+import com.project.ragchatbot.chatbot.chat.jpa.entity.Chat;
+import com.project.ragchatbot.chatbot.chat.jpa.repository.ChatRepository;
+
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.stereotype.Service;
-
-import java.util.LinkedList;
 import java.util.List;
 
 //@Service
@@ -36,25 +32,20 @@ import java.util.List;
 //        return chatRepository.findChatsBySavedChatOrderByMessageID(savedChat).orElseThrow(Exception::new);
 //    }
 //}
-import com.project.ragchatbot.chatbot.savedChat.SavedChat;
-import lombok.AllArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import com.project.ragchatbot.chatbot.chat.service.ChatService;
+import com.project.ragchatbot.chatbot.savedChat.jpa.entity.SavedChat;;
 
 @Service
 @AllArgsConstructor
-public class ChatService {
+public class ChatServiceImpl implements ChatService {
 
     private final ChatRepository chatRepository;
     private final RedisTemplate<String, Object> redisTemplate;
 
-
     public void saveChatToCache(CachedChat cachedChat) {
-        System.out.println("Saved " + cachedChat.message + " to cache!");
+        System.out.println("Saved " + cachedChat.getMessage() + " to cache!");
         redisTemplate.opsForList().rightPush("cache_key", cachedChat);
     }
 
@@ -67,8 +58,8 @@ public class ChatService {
 
             for (CachedChat cachedChat : chatsToSave) {
                 Chat newChat = new Chat();
-                newChat.setMessage(cachedChat.message);
-                newChat.setChatRole(cachedChat.chatRole);
+                newChat.setMessage(cachedChat.getMessage());
+                newChat.setChatRole(cachedChat.getChatRole());
                 newChat.setSavedChat(savedChat);
                 chatRepository.save(newChat);
             }
@@ -81,4 +72,3 @@ public class ChatService {
         return chatRepository.findChatsBySavedChatOrderByMessageID(savedChat).orElseThrow(Exception::new);
     }
 }
-

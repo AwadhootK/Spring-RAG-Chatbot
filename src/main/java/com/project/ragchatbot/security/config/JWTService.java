@@ -1,23 +1,24 @@
 package com.project.ragchatbot.security.config;
 
+import java.security.Key;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
-
-import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
 
 @Service
 public class JWTService {
     private static final String SECRET_KEY = "9UAXzOcNsMiB2nBbwGVfVQWb7EOyQzchdoXnBgBl2zpPPt3wVBqQjgsY0azpMQhD";
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -33,14 +34,13 @@ public class JWTService {
 
     public String generateToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails
-    ) {
+            UserDetails userDetails) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))   // 24 hrs + 10000 ms
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)) // 24 hrs + 10000 ms
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

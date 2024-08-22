@@ -1,34 +1,40 @@
 package com.project.ragchatbot.chatbot;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.project.ragchatbot.chatbot.chat.CachedChat;
-import com.project.ragchatbot.chatbot.chat.ChatRole;
-import com.project.ragchatbot.chatbot.chat.ChatService;
-import com.project.ragchatbot.chatbot.savedChat.SavedChat;
-import com.project.ragchatbot.chatbot.savedChat.SavedChatsService;
-import com.project.ragchatbot.security.config.UserSecurityDetails;
-import lombok.AllArgsConstructor;
-import org.springframework.http.*;
+import java.util.List;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.project.ragchatbot.chatbot.chat.jpa.entity.CachedChat;
+import com.project.ragchatbot.chatbot.chat.jpa.entity.ChatRole;
+import com.project.ragchatbot.chatbot.chat.service.ChatService;
+import com.project.ragchatbot.chatbot.savedChat.jpa.entity.SavedChat;
+import com.project.ragchatbot.chatbot.savedChat.service.SavedChatService;
+import com.project.ragchatbot.security.config.UserSecurityDetails;
+import com.project.ragchatbot.util.FlaskAPIEndpoints;
+
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
 public class ChatbotService {
     private final RestTemplate restTemplate;
     private final ChatService chatService;
-    private final SavedChatsService savedChatService;
+    private final SavedChatService savedChatService;
     private final String FLASK_HOST = "localhost";
     private final String FLASK_PORT = "8000";
     private final String FLASK_URL = "http://" + FLASK_HOST + ":" + FLASK_PORT;
-
 
     private String callFlaskAPIPost(String url, String query) {
         String username = UserSecurityDetails.getUsername();
@@ -54,12 +60,12 @@ public class ChatbotService {
         MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
         requestBody.add("username", username); // Add form data
 
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(requestBody, headers); // Use the correct entity type
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(requestBody, headers); // Use the correct
+                                                                                                    // entity type
 
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
         return response.getBody();
     }
-
 
     private String callFlaskAPIGet(String url) {
         String username = UserSecurityDetails.getUsername();
@@ -67,7 +73,8 @@ public class ChatbotService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> request = new HttpEntity<>(headers);
 
-        ResponseEntity<String> response = restTemplate.exchange(url+"/"+username, HttpMethod.GET, request, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(url + "/" + username, HttpMethod.GET, request,
+                String.class);
         return response.getBody();
     }
 

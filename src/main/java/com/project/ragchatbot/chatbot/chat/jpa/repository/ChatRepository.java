@@ -1,6 +1,8 @@
-package com.project.ragchatbot.chatbot.chat;
+package com.project.ragchatbot.chatbot.chat.jpa.repository;
 
-import com.project.ragchatbot.chatbot.savedChat.SavedChat;
+import com.project.ragchatbot.chatbot.chat.jpa.entity.Chat;
+import com.project.ragchatbot.chatbot.savedChat.jpa.entity.SavedChat;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

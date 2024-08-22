@@ -1,9 +1,7 @@
-package com.project.ragchatbot.chatbot.chat;
+package com.project.ragchatbot.chatbot.chat.jpa.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.Serializable;
 

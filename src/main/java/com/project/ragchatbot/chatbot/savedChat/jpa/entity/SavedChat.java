@@ -1,6 +1,5 @@
-package com.project.ragchatbot.chatbot.savedChat;
+package com.project.ragchatbot.chatbot.savedChat.jpa.entity;
 
-import com.project.ragchatbot.chatbot.chat.Chat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
+import com.project.ragchatbot.chatbot.chat.jpa.entity.Chat;
 
 @Data
 @Builder

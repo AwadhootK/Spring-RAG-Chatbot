@@ -1,9 +1,10 @@
-package com.project.ragchatbot.chatbot.chat;
+package com.project.ragchatbot.chatbot.chat.jpa.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.project.ragchatbot.chatbot.savedChat.SavedChat;
+import com.project.ragchatbot.chatbot.savedChat.jpa.entity.SavedChat;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

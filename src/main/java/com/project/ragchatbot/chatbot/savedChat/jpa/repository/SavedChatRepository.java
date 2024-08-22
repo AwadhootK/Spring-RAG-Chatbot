@@ -1,8 +1,10 @@
-package com.project.ragchatbot.chatbot.savedChat;
+package com.project.ragchatbot.chatbot.savedChat.jpa.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import com.project.ragchatbot.chatbot.savedChat.jpa.entity.SavedChat;
 
 import java.util.List;
 

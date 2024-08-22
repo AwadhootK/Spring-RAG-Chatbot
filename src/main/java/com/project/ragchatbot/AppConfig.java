@@ -1,4 +1,4 @@
-package com.project.ragchatbot.chatbot;
+package com.project.ragchatbot;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
